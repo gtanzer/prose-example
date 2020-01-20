@@ -1,9 +1,13 @@
-using semantics Verse.Semantics;
-using learners Verse.WitnessFunctions;
-language Ex;
-feature double Score = Verse.RankingScore;
+using semantics Ex.Semantics;
+using learners Ex.WitnessFunctions;
+language Substring;
+@complete feature double Score = Ex.RankingScore;
 
-@input string a1;
-@start string a3 := a1 | Substring(a1,a2,a2) | Append(a3,a3);
-int a2;
+@input string v;
+@start string program := v | str | Append(str, program);
 
+string str := v | Substring(v, pos, pos);
+int pos := AbsPos(v, k) | RelPos(v, rr);
+
+int k;
+Tuple<Regex,Regex> rr;

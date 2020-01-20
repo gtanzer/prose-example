@@ -4,7 +4,7 @@ using Microsoft.ProgramSynthesis.Compiler;
 using Microsoft.ProgramSynthesis.Learning;
 using Microsoft.ProgramSynthesis.Learning.Strategies;
 using Microsoft.ProgramSynthesis.Specifications;
-using Verse;
+using Ex;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,12 +12,12 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.ProgramSynthesis.VersionSpace;
 
-namespace VerseApp {
+namespace ExApp {
     class Program {
 
         static Grammar grammar = DSLCompiler.
             Compile(new CompilerOptions() {
-                InputGrammarText = File.ReadAllText("./synthesis/grammar/verse.grammar"),
+                InputGrammarText = File.ReadAllText("./synthesis/grammar/Ex.grammar"),
                 References = CompilerReference.FromAssemblyFiles(typeof(Program).GetTypeInfo().Assembly)
             }).Value;
         static SynthesisEngine prose;
