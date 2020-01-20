@@ -1,0 +1,9 @@
+using semantics Verse.Semantics;
+using learners Verse.WitnessFunctions;
+language Ex;
+feature double Score = Verse.RankingScore;
+
+@input string a1;
+@start string a3 := a1 | Substring(a1,a2,a2) | Append(a3,a3);
+int a2;
+
