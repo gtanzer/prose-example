@@ -13,6 +13,8 @@ namespace Ex {
     public class WitnessFunctions : DomainLearningLogic {
         public WitnessFunctions(Grammar grammar) : base(grammar) { }
 
+        /*
+        // old version
         [WitnessFunction(nameof(Semantics.Append), 0)]
         public DisjunctiveExamplesSpec WitnessPrefix(GrammarRule rule, ExampleSpec spec) {
             var result = new Dictionary<State, IEnumerable<object>>();
@@ -26,6 +28,25 @@ namespace Ex {
                 if (substrings.Count == 0) return null;
                 result[inputState] = substrings.Cast<object>();
                 Console.WriteLine("Prefix o: {0}\tp: {1}", output, String.Join(", ", substrings));
+            }
+            return new DisjunctiveExamplesSpec(result);
+        }*/
+        
+        // new disjunctified version
+        [WitnessFunction(nameof(Semantics.Append), 0)]
+        public DisjunctiveExamplesSpec WitnessPrefix(GrammarRule rule, DisjunctiveExamplesSpec spec) {
+            var result = new Dictionary<State, IEnumerable<object>>();
+            
+            foreach (var example in spec.DisjunctiveExamples) {
+                State inputState = example.Key;
+                var substrings = new HashSet<string>();
+                foreach(string output in example.Value) {
+                    for (int i = 1; i <= output.Length; ++i) {
+                        substrings.Add(output.Substring(0, i));
+                    }
+                }
+                if (substrings.Count == 0) return null;
+                result[inputState] = substrings.ToList().Cast<object>();
             }
             return new DisjunctiveExamplesSpec(result);
         }
@@ -42,5 +63,6 @@ namespace Ex {
             }
             return new ExampleSpec(result);
         }
+        
     }
 }
