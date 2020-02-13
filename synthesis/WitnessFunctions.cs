@@ -41,9 +41,11 @@ namespace Ex {
                 State inputState = example.Key;
                 var substrings = new HashSet<string>();
                 foreach(string output in example.Value) {
+                    Console.WriteLine("Output: {0}", output);
                     for (int i = 1; i <= output.Length; ++i) {
                         substrings.Add(output.Substring(0, i));
                     }
+                    Console.WriteLine("Prefix o: {0}\tp: {1}", output, String.Join(", ", substrings));
                 }
                 if (substrings.Count == 0) return null;
                 result[inputState] = substrings.ToList().Cast<object>();
