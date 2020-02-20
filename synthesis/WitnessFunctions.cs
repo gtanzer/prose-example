@@ -37,23 +37,27 @@ namespace Ex {
         public DisjunctiveExamplesSpec WitnessPrefix(GrammarRule rule, DisjunctiveExamplesSpec spec) {
             var result = new Dictionary<State, IEnumerable<object>>();
             
+            Console.WriteLine("Starting Prefix");
+            
             foreach (var example in spec.DisjunctiveExamples) {
                 State inputState = example.Key;
-                var substrings = new HashSet<string>();
+                var prefixes = new HashSet<string>();
+                Console.WriteLine("inputState: {0}", inputState);
                 foreach(string output in example.Value) {
                     Console.WriteLine("Output: {0}", output);
                     for (int i = 1; i <= output.Length; ++i) {
-                        substrings.Add(output.Substring(0, i));
+                        prefixes.Add(output.Substring(0, i));
                     }
-                    Console.WriteLine("Prefix o: {0}\tp: {1}", output, String.Join(", ", substrings));
+                    Console.WriteLine("Prefix o: {0}\tp: {1}", output, String.Join(", ", prefixes));
                 }
-                if (substrings.Count == 0) return null;
-                result[inputState] = substrings.ToList().Cast<object>();
+                if (prefixes.Count == 0) return null;
+                result[inputState] = prefixes.ToList().Cast<object>();
             }
             return new DisjunctiveExamplesSpec(result);
         }
 
-        [WitnessFunction(nameof(Semantics.Append), 1, DependsOnParameters = new []{0})]
+        // old version
+        /*[WitnessFunction(nameof(Semantics.Append), 1, DependsOnParameters = new []{0})]
         public ExampleSpec WitnessSuffix(GrammarRule rule, ExampleSpec spec, ExampleSpec prefixSpec) {
             var result = new Dictionary<State, object>();
             foreach (var example in spec.Examples) {
@@ -64,6 +68,27 @@ namespace Ex {
                 Console.WriteLine("Suffix o: {0}\tp: {1}\ts: {2}", output, prefix, output.Substring(prefix.Length));
             }
             return new ExampleSpec(result);
+        }*/
+        
+        // new disjunctified version
+        public DisjunctiveExamplesSpec WitnessSuffix(GrammarRule rule, DisjunctiveExamplesSpec spec, DisjunctiveExamplesSpec prefixSpec) {
+            var result = new Dictionary<State, IEnumerable<object>>();
+            Console.WriteLine("Suffix dispatched");
+            return null;
+            /*
+            foreach (var example in spec.DisjunctiveExamples) {
+                State inputState = example.Key;
+                var suffixes = new HashSet<string>();
+                var prefix = (string) prefixSpec.Examples[inputState];
+                foreach (string output in example.Value) {
+                    suffixes.Add(output.Substring(prefix.Length));
+                    Console.WriteLine("Suffix o: {0}\tp: {1}\ts: {2}", output, prefix, output.Substring(prefix.Length));
+                }
+                if (suffixes.Count == 0) return null;
+                result[inputState] = suffixes.ToList().Cast<object>();
+            }*/
+            
+            return new DisjunctiveExamplesSpec(result);
         }
         
     }
