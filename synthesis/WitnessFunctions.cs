@@ -71,7 +71,8 @@ namespace Ex {
         }*/
         
         // new disjunctified version
-        public DisjunctiveExamplesSpec WitnessSuffix(GrammarRule rule, DisjunctiveExamplesSpec spec, DisjunctiveExamplesSpec prefixSpec) {
+        [WitnessFunction(nameof(Semantics.Append), 1, DependsOnParameters = new []{0})]
+        public DisjunctiveExamplesSpec WitnessSuffix(GrammarRule rule, DisjunctiveExamplesSpec spec, ExampleSpec prefixSpec) {
             var result = new Dictionary<State, IEnumerable<object>>();
             Console.WriteLine("Suffix dispatched");
             return null;
